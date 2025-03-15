@@ -1,17 +1,17 @@
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom'
 import SignUp from '../pages/SignUp.tsx'
 import Home from '../pages/Home.tsx'
 
 const AppRoutes = () => {
   return (
     <>
-        <BrowserRouter>
+        <HashRouter>
             <Routes>
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/' element={<Home />} />
             </Routes>
-        </BrowserRouter>
+        </HashRouter>
     </>
   )
 }
