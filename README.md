@@ -1,54 +1,116 @@
-# React + TypeScript + Vite
+# AInvoker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AInvoker is a SaaS platform that provides seamless user authentication and API access to OpenAI's text generation models. It allows users to integrate AI-powered text generation into their systems without the hassle of hosting their own servers.
 
-Currently, two official plugins are available:
+## Features
+- **User Authentication**: Secure and easy-to-use authentication system
+- **API Access**: Purchase and manage API keys for OpenAI integration
+- **Scalability**: No need to maintain infrastructure—AInvoker handles it for you
+- **Monitoring & Usage Tracking**: View API usage statistics in real-time
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
+### Installation
+Sign up for an account at [AInvoker's website(tba)](#) and obtain an API key.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Usage
+#### Making a Request
+##### Using cURL
+```sh
+curl -X POST "https://api.ainvoker.com/generate" \
+     -H "Authorization: Bearer YOUR_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"prompt": "Write a short poem about the sea."}'
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
+##### Using Fetch API
+```javascript
+fetch("https://api.ainvoker.com/generate", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json"
   },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
+  body: JSON.stringify({ prompt: "Write a short poem about the sea." })
 })
+  .then(response => response.json())
+  .then(data => console.log(data.generated_text))
+  .catch(error => console.error("Error:", error));
 ```
+
+##### Using Axios
+```javascript
+import axios from "axios";
+
+axios.post("https://api.ainvoker.com/generate", {
+  prompt: "Write a short poem about the sea."
+}, {
+  headers: {
+    "Authorization": "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json"
+  }
+})
+.then(response => console.log(response.data.generated_text))
+.catch(error => console.error("Error:", error));
+```
+
+#### Response
+```json
+{
+  "generated_text": "The waves dance under the moon's soft glow..."
+}
+```
+
+## API Documentation
+### `POST /generate`
+Generates AI-powered text based on the provided prompt.
+
+**Request Body:**
+- `prompt` (string, required): The input text to generate a response from.
+- `max_tokens` (integer, optional): Limit on the number of tokens in the response.
+
+**Response:**
+- `generated_text` (string): The AI-generated response.
+
+## Pricing
+AInvoker offers flexible pricing plans based on API usage. Visit [Pricing Page(tba)](#) for details.
+
+## Contribution Guidelines
+We welcome contributions! Follow these steps to get started:
+
+1. **Fork the Repository**: Click the fork button on GitHub and clone your fork.
+2. **Create a Branch**: Use `git checkout -b feature-branch` to create a new branch.
+3. **Make Changes**: Implement your feature or fix.
+4. **Commit Changes**: Follow the commit conventions described above.
+5. **Push to GitHub**: Use `git push origin feature-branch`.
+6. **Submit a Pull Request (PR)**: Open a PR with a clear description of your changes.
+## Commit Conventions
+To maintain a clean and consistent commit history, follow these conventions:
+
+### Format
+```
+<type>(<scope>): <message>
+```
+
+### Common Types
+- **feat**: A new feature (e.g., `feat(auth): add JWT support`)
+- **fix**: A bug fix (e.g., `fix(api): correct token validation`)
+- **docs**: Documentation changes (e.g., `docs(readme): add commit conventions`)
+- **style**: Code style updates (e.g., `style(ui): improve button padding`)
+- **refactor**: Code restructuring without changing functionality (e.g., `refactor(database): optimize query handling`)
+- **test**: Adding or updating tests (e.g., `test(auth): add unit tests for login`)
+- **chore**: Maintenance tasks (e.g., `chore(deps): update dependencies`)
+
+### Examples
+```
+feat(api): add text generation endpoint
+fix(auth): resolve API key validation issue
+docs(readme): update API usage examples
+```
+
+### Code of Conduct
+- Be respectful and collaborative.
+- Keep PRs focused and well-documented.
+- Ensure tests pass before submitting PRs.
+
+## License
+MIT
