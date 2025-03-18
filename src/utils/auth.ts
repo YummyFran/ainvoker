@@ -1,5 +1,5 @@
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, updateProfile, User } from 'firebase/auth'
-import { auth, google } from "./firebase.js";
+import { auth, github, google } from "./firebase.js";
 import { FirebaseError } from 'firebase/app';
 
 type UserCredential = Promise<[User | null, FirebaseError | null]>
@@ -46,6 +46,21 @@ export const signInWithGoogle = async (): UserCredential => {
         
         user = res.user
     } catch (error) {
+        err = error as FirebaseError
+    }
+
+    return [user, err]
+}
+
+export const signInWithGitHub = async (): UserCredential => {
+    let user: User | null = null
+    let err: FirebaseError | null = null
+
+    try {
+        const res = await signInWithPopup(auth, github)
+
+        user = res.user
+    } catch(error) {
         err = error as FirebaseError
     }
 
