@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { signUp } from "../utils/auth";
+import { signInWithGoogle, signUp } from "../utils/auth";
 import { CredentialsType, FirebaseAuthErrorCode, FirebaseErrorLookup } from "../types/auth";
 
 const capitalize = (str: string | undefined) => str && str.charAt(0).toUpperCase() + str.slice(1);
@@ -45,7 +45,7 @@ const SignUp = () => {
       return
     }
 
-    const [user, err] = await signUp(credentials.email, credentials.password, credentials.name!)
+    const [, err] = await signUp(credentials.email, credentials.password, credentials.name!)
 
     if(err) {
       if (err.code! in FirebaseErrorLookup.email || err.code! in FirebaseErrorLookup.general) {
@@ -61,6 +61,16 @@ const SignUp = () => {
     }
 
     navigate("/")
+  }
+
+  const handleGoogleSignIn = async () => {
+    const [, err] = await signInWithGoogle()
+
+    if(err) {
+      return alert("Error signing in")
+    }
+
+    navigate('/')
   }
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +92,8 @@ const SignUp = () => {
         <h1 className="text-2xl font-bold text-left pb-4 text-gray-800">Create your account</h1>
 
         <div className="flex flex-col space-y-2">
-          <button type="button" className="flex items-center justify-center w-full px-4 py-2 text-gray-700 bg-white border rounded-lg hover:bg-gray-100">
+          <button type="button" onClick={() => handleGoogleSignIn()}
+            className="flex items-center justify-center w-full px-4 py-2 text-gray-700 bg-white border rounded-lg hover:bg-gray-100">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5 mr-2" />
             Sign up with Google
           </button>
